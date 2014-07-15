@@ -12,7 +12,7 @@ RUN apt-get -y upgrade
 
 # Install
 RUN apt-get install -y nginx \
-    php5-fpm php5-mysql php-apc php5-imagick php5-imap php5-mcrypt php5-gd libssh2-php git
+    php5-fpm php5-mysql php-apc php5-imagick php5-imap php5-mcrypt php5-gd libssh2-php git php5-cli curl
 
 RUN mkdir -p /etc/nginx/sites-enabled
 
@@ -21,9 +21,11 @@ ADD nginx.conf /etc/nginx/nginx.conf
 ADD nginx-site.conf /etc/nginx/sites-available/default
 RUN sed -i -e 's/^listen =.*/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/pool.d/www.conf
 
-# Remove the old hello world app and grab piwik source
-RUN git clone https://github.com/piwik/piwik.git /data && cd /data && git submodule init && git submodule update
+WORKDIR /data
+RUN git clone https://github.com/piwik/piwik.git ./ && git submodule init && git submodule update
 RUN chown -R www-data:www-data /data
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=bin
+RUN composer install
 
 # Create the section for persistent files
 RUN mkdir /var/lib/piwik
