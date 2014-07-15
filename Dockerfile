@@ -22,7 +22,7 @@ ADD nginx-site.conf /etc/nginx/sites-available/default
 RUN sed -i -e 's/^listen =.*/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/pool.d/www.conf
 
 # Remove the old hello world app and grab piwik source
-RUN git clone https://github.com/piwik/piwik.git /data && git submodule init /data && git submodule update
+RUN git clone https://github.com/piwik/piwik.git /data && cd /data && git submodule init && git submodule update
 RUN chown -R www-data:www-data /data
 
 # Create the section for persistent files
