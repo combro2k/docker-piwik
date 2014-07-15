@@ -23,9 +23,9 @@ RUN sed -i -e 's/^listen =.*/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/
 
 WORKDIR /data
 RUN git clone https://github.com/piwik/piwik.git ./ && git submodule init && git submodule update
-RUN chown -R www-data:www-data /data
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin
 RUN /usr/bin/composer.phar install
+RUN chown -R www-data:www-data /data
 
 # Create the section for persistent files
 RUN mkdir /var/lib/piwik
