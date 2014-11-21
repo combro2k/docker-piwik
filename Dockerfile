@@ -22,7 +22,7 @@ ADD nginx-site.conf /etc/nginx/sites-enabled/default
 RUN sed -i -e 's/^listen =.*/listen = \/var\/run\/php5-fpm.sock/' /etc/php5/fpm/pool.d/www.conf
 
 WORKDIR /data
-RUN git clone https://github.com/piwik/piwik.git ./ && git checkout 2.8.0-b2 && git submodule init && git submodule update
+RUN git clone https://github.com/piwik/piwik.git ./ && git checkout 2.9.1 && git submodule init && git submodule update
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin
 RUN /usr/bin/composer.phar install
 RUN chown -R www-data:www-data /data
