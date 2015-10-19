@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker run -ti --rm --name piwik combro2k/piwik:latest ${@}
+docker run -ti --rm --name piwik -P combro2k/piwik:latest ${@}

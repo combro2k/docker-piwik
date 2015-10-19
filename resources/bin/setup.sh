@@ -25,6 +25,8 @@ export PACKAGES=(
 )
 
 pre_install() {
+    mkdir -p /var/lib/piwik/ 2>&1 || return 1
+
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 2>&1 || return 1
     echo 'deb http://nginx.org/packages/mainline/debian jessie nginx' > /etc/apt/sources.list.d/nginx-mainline-jessie.list 2>&1 || return 1
     
@@ -47,12 +49,6 @@ install_piwik() {
 
     /usr/bin/composer.phar install --no-dev --optimize-autoloader --no-interaction  2>&1 || return 1
     chown -R www-data:www-data /data 2>&1 || return 1
-
-    mv /data/config /var/lib/piwik/ 2>&1 || return 1
-    ln -s /var/lib/piwik/config /data/config 2>&1 || return 1
-
-    mv /data/plugins /var/lib/piwik/ 2>&1 || return 1
-    ln -s /var/lib/piwik/plugins /data/plugins 2>&1 || return 1
 
     return 0
 }
@@ -79,7 +75,7 @@ build() {
 	for task in ${tasks[@]}
 	do
 		echo "Running build task ${task}..." || exit 1
-		${task} | tee -a "${INSTALL_LOG}" || exit 1
+		${task} | tee -a "${INSTALL_LOG}" 2>&1 || exit 1
 	done
 }
 

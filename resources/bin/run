@@ -1,5 +1,27 @@
 #!/bin/bash -e
 
+if [ ! -L "/data/config" ]; then
+    if [ ! -d "/var/lib/piwik/config" ];
+    then
+        mv /data/config /var/lib/piwik/config
+    else
+        rm -fr /data/config
+    fi
+
+    ln -s /var/lib/piwik/config /data/config
+fi
+
+if [ ! -L "/data/plugins" ]; then
+    if [ ! -d "/var/lib/piwik/plugins" ];
+    then
+        mv /data/plugins /var/lib/piwik/plugins
+    else
+        rm -fr /data/plugins
+    fi
+
+    ln -s /var/lib/piwik/plugins /data/plugins
+fi
+
 service php5-fpm start
 
 chmod 666 /var/run/php5-fpm.sock
