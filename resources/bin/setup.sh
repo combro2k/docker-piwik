@@ -75,7 +75,7 @@ build() {
 	for task in ${tasks[@]}
 	do
 		echo "Running build task ${task}..." || exit 1
-		${task} | tee -a "${INSTALL_LOG}" 2>&1 || exit 1
+		${task} | tee -a "${INSTALL_LOG}" > /dev/null 2>&1 || exit 1
 	done
 }
 
